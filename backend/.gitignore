@@ -1,0 +1,21 @@
+# Virtual environment
+.venv/
+env/
+venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.pytest_cache/
+
+# Local databases and uploads
+data/
+*.db
+*.sqlite3
+
+# Model weights (auto-downloaded on first run or build)
+*.pt
+
+# Local environment variables
+.env

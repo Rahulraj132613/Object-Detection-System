@@ -221,3 +221,21 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+
+# Frontend source unignore (overrides any packaging lib/ pattern)
+!frontend/src/lib/
+!frontend/src/lib/**
+
+# Node & Next.js root guards
+node_modules/
+.next/
+out/
+
+# AI Model weights & local data guards
+*.pt
+*.onnx
+*.engine
+data/
+*.db
+*.sqlite3
