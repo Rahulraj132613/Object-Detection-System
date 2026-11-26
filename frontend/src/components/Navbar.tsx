@@ -25,9 +25,6 @@ export default function Navbar() {
               <span className="font-bold text-lg tracking-tight text-brown-800">
                 VisionAI
               </span>
-              <span className="px-2 py-0.5 text-[10px] font-semibold tracking-wider uppercase rounded-md bg-sage-100 text-sage-700 border border-sage-200">
-                YOLOv8 Nano
-              </span>
             </div>
             <p className="text-xs text-brown-600 hidden sm:block">
               AI Object Detection &amp; Recognition
@@ -70,16 +67,7 @@ export default function Navbar() {
           </Link>
         </nav>
 
-        {/* Status Indicator */}
-        <div className="hidden md:flex items-center text-xs">
-          <div className="flex items-center space-x-2 px-3 py-1.5 rounded-full bg-sage-50 border border-sage-200 text-sage-700 shadow-warm-sm">
-            <span className="relative flex h-2.5 w-2.5">
-              <span className="animate-pulse-ring absolute inline-flex h-full w-full rounded-full bg-sage-400" />
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-sage-600" />
-            </span>
-            <span className="font-semibold">Backend Online</span>
-          </div>
-        </div>
+
       </div>
     </header>
   );

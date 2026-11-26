@@ -9,7 +9,6 @@ import ExportButtons from "@/components/ExportButtons";
 import { fetchSupportedClasses, detectObjects, getFullImageUrl } from "@/lib/api";
 import { DetectionResponse, COCOClass } from "@/lib/types";
 import {
-  ModelChipIcon,
   AlertNoticeIcon,
   OrbitalSpinnerIcon,
   AwaitingCanvasIcon,
@@ -79,10 +78,7 @@ export default function WorkbenchPage() {
           className="pointer-events-none absolute right-24 -bottom-16 h-40 w-40 rounded-full bg-brown-200/40 blur-2xl"
         />
         <div className="relative z-10 max-w-3xl space-y-2.5">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-sage-100 border border-sage-200 text-sage-700 text-xs font-semibold shadow-warm-sm">
-            <ModelChipIcon className="h-3.5 w-3.5 text-sage-600" />
-            <span>Pretrained Ultralytics YOLOv8 Nano • COCO 80 Categories</span>
-          </div>
+
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-brown-800">
             AI Object Detection &amp; Recognition
           </h1>
