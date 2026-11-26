@@ -1,8 +1,15 @@
 "use client";
 
 import React, { useState } from "react";
-import { Sliders, Filter, Sparkles, RefreshCw, ChevronDown, ChevronUp } from "lucide-react";
 import { COCOClass } from "@/lib/types";
+import {
+  TuningSlidersIcon,
+  FilterFunnelIcon,
+  ScanTriggerIcon,
+  OrbitalSpinnerIcon,
+  ChevronIcon,
+  SearchLensIcon,
+} from "@/components/Icons";
 
 interface ControlsPanelProps {
   confidence: number;
@@ -48,23 +55,28 @@ export default function ControlsPanel({
     cls.name.toLowerCase().includes(filterSearch.toLowerCase())
   );
 
+  const confidencePercent = Math.round(((confidence - 0.05) / 0.9) * 100);
+  const iouPercent = Math.round(((iouThreshold - 0.1) / 0.8) * 100);
+
   return (
-    <div className="w-full rounded-2xl border border-slate-800 bg-slate-900/50 p-5 space-y-5">
-      <div className="flex items-center justify-between border-b border-slate-800/80 pb-3">
-        <h3 className="text-sm font-semibold text-slate-200 flex items-center space-x-2">
-          <Sliders className="h-4 w-4 text-indigo-400" />
+    <div className="w-full rounded-2xl border border-brown-200/90 bg-cream-50/95 p-5 space-y-5 shadow-warm-sm">
+      <div className="flex items-center justify-between border-b border-brown-200/80 pb-3">
+        <h3 className="text-sm font-bold text-brown-800 flex items-center space-x-2">
+          <TuningSlidersIcon className="h-4 w-4 text-sage-600" />
           <span>Inference Parameters</span>
         </h3>
-        <span className="text-xs text-slate-400">YOLOv8 Nano Engine</span>
+        <span className="px-2 py-0.5 rounded-md bg-brown-100 text-brown-700 border border-brown-200/80 text-[11px] font-medium">
+          YOLOv8 Nano Engine
+        </span>
       </div>
 
       {/* 1. Confidence Slider */}
       <div className="space-y-2">
         <div className="flex items-center justify-between text-xs font-medium">
-          <label htmlFor="conf-slider" className="text-slate-300">
+          <label htmlFor="conf-slider" className="text-brown-700 font-semibold">
             Confidence Threshold
           </label>
-          <span className="px-2 py-0.5 rounded-md bg-indigo-500/20 text-indigo-300 font-mono font-semibold border border-indigo-500/30">
+          <span className="px-2.5 py-0.5 rounded-md bg-sage-100 text-sage-700 font-mono font-bold border border-sage-200">
             {Math.round(confidence * 100)}%
           </span>
         </div>
@@ -77,9 +89,12 @@ export default function ControlsPanel({
           value={confidence}
           onChange={(e) => setConfidence(parseFloat(e.target.value))}
           disabled={isLoading}
-          className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500"
+          style={{
+            background: `linear-gradient(to right, #5A7D55 ${confidencePercent}%, #DFCBB3 ${confidencePercent}%)`,
+          }}
+          className="studio-range w-full cursor-pointer"
         />
-        <div className="flex justify-between text-[10px] text-slate-500 font-mono">
+        <div className="flex justify-between text-[10px] text-brown-500 font-mono">
           <span>5% (High Recall)</span>
           <span>50%</span>
           <span>95% (High Precision)</span>
@@ -89,10 +104,10 @@ export default function ControlsPanel({
       {/* 2. IoU / NMS Threshold */}
       <div className="space-y-2">
         <div className="flex items-center justify-between text-xs font-medium">
-          <label htmlFor="iou-slider" className="text-slate-300">
+          <label htmlFor="iou-slider" className="text-brown-700 font-semibold">
             IoU (NMS Overlap)
           </label>
-          <span className="px-2 py-0.5 rounded-md bg-cyan-500/20 text-cyan-300 font-mono font-semibold border border-cyan-500/30">
+          <span className="px-2.5 py-0.5 rounded-md bg-brown-100 text-brown-700 font-mono font-bold border border-brown-200">
             {Math.round(iouThreshold * 100)}%
           </span>
         </div>
@@ -105,9 +120,12 @@ export default function ControlsPanel({
           value={iouThreshold}
           onChange={(e) => setIouThreshold(parseFloat(e.target.value))}
           disabled={isLoading}
-          className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-cyan-500"
+          style={{
+            background: `linear-gradient(to right, #B28D67 ${iouPercent}%, #DFCBB3 ${iouPercent}%)`,
+          }}
+          className="studio-range brown-thumb w-full cursor-pointer"
         />
-        <div className="flex justify-between text-[10px] text-slate-500 font-mono">
+        <div className="flex justify-between text-[10px] text-brown-500 font-mono">
           <span>Strict Overlap</span>
           <span>0.45 Standard</span>
           <span>Loose Overlap</span>
@@ -115,39 +133,46 @@ export default function ControlsPanel({
       </div>
 
       {/* 3. Category Filter Accordion */}
-      <div className="border border-slate-800 rounded-xl overflow-hidden bg-slate-950/40">
+      <div className="border border-brown-200 rounded-xl overflow-hidden bg-cream-100/75">
         <button
           type="button"
           onClick={() => setShowCategoryFilter(!showCategoryFilter)}
-          className="w-full px-3.5 py-2.5 flex items-center justify-between text-xs font-medium text-slate-300 hover:bg-slate-800/40 transition-colors"
+          className="btn-kinetic group w-full px-3.5 py-2.5 flex items-center justify-between text-xs font-semibold text-brown-800 hover:bg-brown-100/60"
         >
           <span className="flex items-center space-x-2">
-            <Filter className="h-3.5 w-3.5 text-indigo-400" />
+            <FilterFunnelIcon className="h-3.5 w-3.5 text-sage-600 transition-transform duration-200 group-hover:scale-110" />
             <span>Target Categories</span>
             {selectedClasses.length > 0 && (
-              <span className="px-1.5 py-0.5 text-[10px] rounded-full bg-indigo-500/20 text-indigo-300 font-mono">
+              <span className="px-2 py-0.5 text-[10px] rounded-full bg-sage-600 text-cream-50 font-mono">
                 {selectedClasses.length} selected
               </span>
             )}
           </span>
-          {showCategoryFilter ? <ChevronUp className="h-3.5 w-3.5 text-slate-400" /> : <ChevronDown className="h-3.5 w-3.5 text-slate-400" />}
+          <ChevronIcon
+            className={`h-3.5 w-3.5 text-brown-500 transition-transform duration-200 ${
+              showCategoryFilter ? "rotate-180" : ""
+            }`}
+          />
         </button>
 
         {showCategoryFilter && (
-          <div className="p-3 border-t border-slate-800 space-y-2.5">
-            <div className="flex items-center justify-between">
-              <input
-                type="text"
-                placeholder="Search 80 COCO classes..."
-                value={filterSearch}
-                onChange={(e) => setFilterSearch(e.target.value)}
-                className="w-full text-xs px-2.5 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500"
-              />
+          <div className="p-3 border-t border-brown-200 bg-cream-50/90 space-y-2.5 animate-fade-up">
+            <div className="flex items-center justify-between gap-2">
+              <div className="relative w-full">
+                <SearchLensIcon className="h-3.5 w-3.5 text-brown-400 absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <input
+                  type="text"
+                  placeholder="Search 80 COCO classes..."
+                  value={filterSearch}
+                  onChange={(e) => setFilterSearch(e.target.value)}
+                  className="w-full text-xs pl-8 pr-2.5 py-1.5 rounded-lg bg-cream-100 border border-brown-200 text-brown-800 placeholder-brown-400 focus:outline-none focus:border-sage-500 focus:ring-1 focus:ring-sage-500/40"
+                />
+              </div>
               {selectedClasses.length > 0 && (
                 <button
                   type="button"
                   onClick={clearClassFilters}
-                  className="ml-2 text-[11px] text-rose-400 hover:underline shrink-0"
+                  className="btn-kinetic px-2.5 py-1.5 rounded-lg bg-terracotta-50 hover:bg-terracotta-100 text-terracotta-600 border border-terracotta-200 text-[11px] font-semibold shrink-0"
                 >
                   Clear
                 </button>
@@ -162,10 +187,10 @@ export default function ControlsPanel({
                     key={cls.id}
                     type="button"
                     onClick={() => toggleClass(cls.name)}
-                    className={`px-2 py-1 rounded-md text-[11px] font-medium transition-all ${
+                    className={`btn-kinetic px-2.5 py-1 rounded-lg text-[11px] font-medium border ${
                       isSelected
-                        ? "bg-indigo-600 text-white shadow-sm"
-                        : "bg-slate-800/70 text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-slate-700/60"
+                        ? "bg-sage-600 text-cream-50 border-sage-600 shadow-warm-sm"
+                        : "bg-cream-100 text-brown-700 border-brown-200 hover:bg-sage-50 hover:text-sage-700 hover:border-sage-300"
                     }`}
                   >
                     {cls.name}
@@ -182,20 +207,26 @@ export default function ControlsPanel({
         type="button"
         onClick={onDetect}
         disabled={!hasImage || isLoading}
-        className={`w-full py-3 px-4 rounded-xl font-semibold text-sm flex items-center justify-center space-x-2 transition-all duration-200 shadow-lg ${
+        className={`btn-kinetic group w-full py-3 px-4 rounded-xl font-bold text-sm flex items-center justify-center space-x-2 border ${
           hasImage && !isLoading
-            ? "bg-gradient-to-r from-indigo-600 via-indigo-500 to-cyan-500 hover:from-indigo-500 hover:to-cyan-400 text-white shadow-indigo-500/25 cursor-pointer hover:scale-[1.01]"
-            : "bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700/50"
+            ? "bg-gradient-to-r from-sage-600 via-sage-500 to-sage-600 hover:from-sage-700 hover:via-sage-600 hover:to-sage-700 text-cream-50 border-sage-600 shadow-sage-glow"
+            : isLoading
+            ? "bg-sage-500 text-cream-50 border-sage-600 shadow-warm-sm opacity-90"
+            : "bg-brown-100 text-brown-500 border-brown-200/90"
         }`}
       >
         {isLoading ? (
           <>
-            <RefreshCw className="h-4 w-4 animate-spin text-indigo-300" />
+            <OrbitalSpinnerIcon className="h-4 w-4 text-cream-50" />
             <span>Analyzing with YOLOv8...</span>
           </>
         ) : (
           <>
-            <Sparkles className="h-4 w-4" />
+            <ScanTriggerIcon
+              className={`h-4 w-4 transition-transform duration-200 ${
+                hasImage ? "group-hover:scale-110 group-hover:rotate-12" : ""
+              }`}
+            />
             <span>Run Object Detection</span>
           </>
         )}

@@ -1,7 +1,14 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { SlidersHorizontal, Columns, Maximize2, Minimize2, ZoomIn, Eye } from "lucide-react";
+import {
+  SplitCompareIcon,
+  SideBySideIcon,
+  ExpandIcon,
+  CollapseIcon,
+  RawViewIcon,
+  BBoxViewIcon,
+} from "@/components/Icons";
 
 interface ImageComparatorProps {
   originalUrl: string;
@@ -56,61 +63,68 @@ export default function ImageComparator({
 
   return (
     <div
-      className={`rounded-2xl border border-slate-800 bg-slate-900/60 overflow-hidden flex flex-col ${
-        isFullscreen ? "fixed inset-4 z-50 bg-slate-950/95 p-4 shadow-2xl" : "w-full"
+      className={`rounded-2xl border border-brown-200/90 bg-cream-50 overflow-hidden flex flex-col shadow-warm-md ${
+        isFullscreen ? "fixed inset-4 z-50 bg-cream-50 p-4 shadow-2xl border-brown-300" : "w-full"
       }`}
     >
       {/* Comparator Header Toolbar */}
-      <div className="p-3 bg-slate-900 border-b border-slate-800 flex flex-wrap items-center justify-between gap-2 text-xs">
+      <div className="p-3 bg-cream-200/75 border-b border-brown-200 flex flex-wrap items-center justify-between gap-2 text-xs">
         <div className="flex items-center space-x-2">
-          <span className="font-semibold text-slate-200 truncate max-w-[200px] sm:max-w-xs">
+          <span className="font-bold text-brown-800 truncate max-w-[200px] sm:max-w-xs">
             {filename}
           </span>
-          <span className="px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 font-mono text-[11px] border border-emerald-500/20">
+          <span className="px-2.5 py-0.5 rounded-full bg-sage-100 text-sage-700 font-mono text-[11px] font-semibold border border-sage-200">
             {inferenceTimeMs.toFixed(1)} ms
           </span>
         </div>
 
         <div className="flex items-center space-x-2">
           {/* Mode Switcher */}
-          <div className="flex items-center bg-slate-800/80 p-0.5 rounded-lg border border-slate-700/60">
+          <div className="flex items-center bg-cream-100 p-0.5 rounded-xl border border-brown-200">
             <button
+              type="button"
               onClick={() => setViewMode("slider")}
-              className={`px-2.5 py-1 rounded-md text-xs font-medium flex items-center space-x-1 transition-all ${
+              className={`btn-kinetic group px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1.5 ${
                 viewMode === "slider"
-                  ? "bg-indigo-600 text-white shadow-sm"
-                  : "text-slate-400 hover:text-slate-200"
+                  ? "bg-sage-600 text-cream-50 shadow-warm-sm"
+                  : "text-brown-700 hover:text-brown-800 hover:bg-brown-100/70"
               }`}
             >
-              <SlidersHorizontal className="h-3 w-3" />
+              <SplitCompareIcon className="h-3.5 w-3.5 transition-transform duration-200 group-hover:scale-110" />
               <span>Split Slider</span>
             </button>
             <button
+              type="button"
               onClick={() => setViewMode("side-by-side")}
-              className={`px-2.5 py-1 rounded-md text-xs font-medium flex items-center space-x-1 transition-all ${
+              className={`btn-kinetic group px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1.5 ${
                 viewMode === "side-by-side"
-                  ? "bg-indigo-600 text-white shadow-sm"
-                  : "text-slate-400 hover:text-slate-200"
+                  ? "bg-sage-600 text-cream-50 shadow-warm-sm"
+                  : "text-brown-700 hover:text-brown-800 hover:bg-brown-100/70"
               }`}
             >
-              <Columns className="h-3 w-3" />
+              <SideBySideIcon className="h-3.5 w-3.5 transition-transform duration-200 group-hover:scale-110" />
               <span>Side-by-Side</span>
             </button>
           </div>
 
           {/* Fullscreen Toggle */}
           <button
+            type="button"
             onClick={() => setIsFullscreen(!isFullscreen)}
-            className="p-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-slate-200 hover:bg-slate-700 transition-colors"
+            className="btn-kinetic group p-2 rounded-lg bg-cream-50 text-brown-700 hover:text-sage-700 hover:bg-sage-50 border border-brown-200 hover:border-sage-300 shadow-warm-sm"
             title={isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
           >
-            {isFullscreen ? <Minimize2 className="h-3.5 w-3.5" /> : <Maximize2 className="h-3.5 w-3.5" />}
+            {isFullscreen ? (
+              <CollapseIcon className="h-3.5 w-3.5 transition-transform duration-200 group-hover:scale-90" />
+            ) : (
+              <ExpandIcon className="h-3.5 w-3.5 transition-transform duration-200 group-hover:scale-110" />
+            )}
           </button>
         </div>
       </div>
 
       {/* Main Image View Area */}
-      <div className="p-4 flex-1 flex items-center justify-center bg-black/40 overflow-hidden">
+      <div className="p-4 flex-1 flex items-center justify-center bg-brown-100/45 overflow-hidden">
         {viewMode === "slider" ? (
           <div
             ref={containerRef}
@@ -118,7 +132,7 @@ export default function ImageComparator({
             onTouchStart={() => setIsDragging(true)}
             onTouchMove={handleTouchMove}
             onTouchEnd={() => setIsDragging(false)}
-            className="relative select-none cursor-ew-resize max-h-[550px] w-full flex items-center justify-center overflow-hidden rounded-xl border border-slate-800 bg-black/50"
+            className="relative select-none cursor-ew-resize max-h-[550px] w-full flex items-center justify-center overflow-hidden rounded-xl border border-brown-200 bg-cream-100/90 shadow-inner"
           >
             {/* Base layer: Annotated Image */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -145,20 +159,20 @@ export default function ImageComparator({
 
             {/* Divider Line */}
             <div
-              className="absolute top-0 bottom-0 w-0.5 bg-cyan-400 shadow-[0_0_10px_#22d3ee] pointer-events-none z-10"
+              className="absolute top-0 bottom-0 w-0.5 bg-sage-600 shadow-[0_0_12px_rgba(71,102,67,0.45)] pointer-events-none z-10"
               style={{ left: `${sliderPosition}%` }}
             >
               {/* Drag Handle Button */}
-              <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 h-8 w-8 rounded-full bg-slate-900 border-2 border-cyan-400 flex items-center justify-center shadow-lg text-cyan-400">
-                <SlidersHorizontal className="h-3.5 w-3.5 rotate-90" />
+              <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 h-9 w-9 rounded-full bg-cream-50 border-2 border-sage-600 flex items-center justify-center shadow-warm-md text-sage-700">
+                <SplitCompareIcon className="h-4 w-4" />
               </div>
             </div>
 
             {/* Badges for Before / After */}
-            <div className="absolute top-3 left-3 px-2 py-1 rounded bg-black/70 backdrop-blur text-[11px] font-mono text-slate-300 border border-white/10 pointer-events-none">
+            <div className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-cream-50/90 backdrop-blur-sm text-[11px] font-mono font-semibold text-brown-800 border border-brown-200 shadow-warm-sm pointer-events-none">
               Original
             </div>
-            <div className="absolute top-3 right-3 px-2 py-1 rounded bg-black/70 backdrop-blur text-[11px] font-mono text-cyan-400 border border-cyan-500/20 pointer-events-none">
+            <div className="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-sage-600/95 backdrop-blur-sm text-[11px] font-mono font-semibold text-cream-50 border border-sage-500 shadow-warm-sm pointer-events-none">
               YOLO Detected
             </div>
           </div>
@@ -166,30 +180,30 @@ export default function ImageComparator({
           /* Side-by-Side Comparison Mode */
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
             {/* Left: Original */}
-            <div className="rounded-xl border border-slate-800 bg-slate-950/70 p-3 flex flex-col items-center">
-              <span className="text-xs font-semibold text-slate-400 mb-2 self-start flex items-center space-x-1.5">
-                <Eye className="h-3.5 w-3.5" />
+            <div className="rounded-xl border border-brown-200 bg-cream-50 p-3 flex flex-col items-center shadow-warm-sm">
+              <span className="text-xs font-semibold text-brown-700 mb-2.5 self-start flex items-center space-x-1.5">
+                <RawViewIcon className="h-3.5 w-3.5 text-brown-500" />
                 <span>Original Image</span>
               </span>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={originalUrl}
                 alt="Original"
-                className="max-h-[380px] max-w-full rounded-lg object-contain"
+                className="max-h-[380px] max-w-full rounded-lg object-contain border border-brown-200/60"
               />
             </div>
 
             {/* Right: YOLO Detected */}
-            <div className="rounded-xl border border-indigo-900/40 bg-slate-950/70 p-3 flex flex-col items-center">
-              <span className="text-xs font-semibold text-cyan-400 mb-2 self-start flex items-center space-x-1.5">
-                <ZoomIn className="h-3.5 w-3.5" />
+            <div className="rounded-xl border border-sage-300 bg-cream-50 p-3 flex flex-col items-center shadow-warm-sm">
+              <span className="text-xs font-semibold text-sage-700 mb-2.5 self-start flex items-center space-x-1.5">
+                <BBoxViewIcon className="h-3.5 w-3.5 text-sage-600" />
                 <span>Annotated Bounding Boxes</span>
               </span>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={annotatedUrl}
                 alt="Annotated"
-                className="max-h-[380px] max-w-full rounded-lg object-contain shadow-lg"
+                className="max-h-[380px] max-w-full rounded-lg object-contain shadow-warm-sm border border-sage-200"
               />
             </div>
           </div>

@@ -14,14 +14,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
-      <body className="min-h-screen bg-[#080b11] text-slate-100 flex flex-col font-sans selection:bg-indigo-500/30 selection:text-white">
+    <html lang="en">
+      <body className="min-h-screen bg-cream-100 text-brown-800 flex flex-col font-sans antialiased selection:bg-sage-200 selection:text-brown-800">
         <Navbar />
-        <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-7">
           {children}
         </main>
-        <footer className="w-full border-t border-slate-900 bg-slate-950/80 py-4 text-center text-xs text-slate-500">
-          AI Object Detection & Recognition System • Ultralytics YOLOv8 Nano & FastAPI
+        <footer className="w-full border-t border-brown-200/80 bg-cream-50/75 backdrop-blur-sm py-4 text-center text-xs text-brown-600">
+          AI Object Detection &amp; Recognition System • Ultralytics YOLOv8 Nano &amp; FastAPI
         </footer>
       </body>
     </html>

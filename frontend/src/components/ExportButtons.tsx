@@ -1,9 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
-import { Download, FileSpreadsheet, FileJson, Image as ImageIcon, Check } from "lucide-react";
 import { DetectionResponse } from "@/lib/types";
 import { getExportCsvUrl, getExportJsonUrl } from "@/lib/api";
+import {
+  DownloadImageIcon,
+  ExportCsvIcon,
+  ExportJsonIcon,
+  CheckBadgeIcon,
+} from "@/components/Icons";
 
 interface ExportButtonsProps {
   detection: DetectionResponse;
@@ -73,12 +78,16 @@ export default function ExportButtons({ detection }: ExportButtonsProps) {
       <button
         type="button"
         onClick={handleDownloadImage}
-        className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold flex items-center space-x-2 transition-all shadow-sm"
+        className={`btn-kinetic group px-3.5 py-2 rounded-xl border text-xs font-semibold flex items-center space-x-2 shadow-warm-sm ${
+          downloadedFormat === "image"
+            ? "bg-sage-600 text-cream-50 border-sage-600 shadow-sage-glow"
+            : "bg-cream-100 hover:bg-sage-50 text-brown-800 border-brown-200 hover:border-sage-400"
+        }`}
       >
         {downloadedFormat === "image" ? (
-          <Check className="h-3.5 w-3.5 text-emerald-400" />
+          <CheckBadgeIcon className="h-4 w-4 text-cream-50 scale-110 transition-transform" />
         ) : (
-          <ImageIcon className="h-3.5 w-3.5 text-cyan-400" />
+          <DownloadImageIcon className="h-4 w-4 text-sage-600 transition-transform duration-200 group-hover:translate-y-0.5" />
         )}
         <span>{downloadedFormat === "image" ? "Saved!" : "Download Annotated Image"}</span>
       </button>
@@ -87,12 +96,16 @@ export default function ExportButtons({ detection }: ExportButtonsProps) {
       <button
         type="button"
         onClick={handleDownloadCsv}
-        className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold flex items-center space-x-2 transition-all shadow-sm"
+        className={`btn-kinetic group px-3.5 py-2 rounded-xl border text-xs font-semibold flex items-center space-x-2 shadow-warm-sm ${
+          downloadedFormat === "csv"
+            ? "bg-sage-600 text-cream-50 border-sage-600 shadow-sage-glow"
+            : "bg-cream-100 hover:bg-sage-50 text-brown-800 border-brown-200 hover:border-sage-400"
+        }`}
       >
         {downloadedFormat === "csv" ? (
-          <Check className="h-3.5 w-3.5 text-emerald-400" />
+          <CheckBadgeIcon className="h-4 w-4 text-cream-50 scale-110 transition-transform" />
         ) : (
-          <FileSpreadsheet className="h-3.5 w-3.5 text-emerald-400" />
+          <ExportCsvIcon className="h-4 w-4 text-sage-600 transition-transform duration-200 group-hover:scale-110" />
         )}
         <span>{downloadedFormat === "csv" ? "Saved CSV!" : "Export CSV Report"}</span>
       </button>
@@ -101,12 +114,16 @@ export default function ExportButtons({ detection }: ExportButtonsProps) {
       <button
         type="button"
         onClick={handleDownloadJson}
-        className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold flex items-center space-x-2 transition-all shadow-sm"
+        className={`btn-kinetic group px-3.5 py-2 rounded-xl border text-xs font-semibold flex items-center space-x-2 shadow-warm-sm ${
+          downloadedFormat === "json"
+            ? "bg-sage-600 text-cream-50 border-sage-600 shadow-sage-glow"
+            : "bg-cream-100 hover:bg-brown-100 text-brown-800 border-brown-200 hover:border-brown-300"
+        }`}
       >
         {downloadedFormat === "json" ? (
-          <Check className="h-3.5 w-3.5 text-emerald-400" />
+          <CheckBadgeIcon className="h-4 w-4 text-cream-50 scale-110 transition-transform" />
         ) : (
-          <FileJson className="h-3.5 w-3.5 text-indigo-400" />
+          <ExportJsonIcon className="h-4 w-4 text-brown-500 transition-transform duration-200 group-hover:scale-110" />
         )}
         <span>{downloadedFormat === "json" ? "Saved JSON!" : "Export JSON Report"}</span>
       </button>

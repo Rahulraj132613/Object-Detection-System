@@ -5,7 +5,13 @@ import AnalyticsCards from "@/components/AnalyticsCards";
 import HistoryTable from "@/components/HistoryTable";
 import { fetchAnalytics, fetchHistory, clearAllHistory } from "@/lib/api";
 import { AnalyticsResponse, HistoryItem } from "@/lib/types";
-import { BarChart3, RefreshCw, Trash2, ArrowLeft } from "lucide-react";
+import {
+  AnalyticsChartIcon,
+  RefreshSyncIcon,
+  TrashActionIcon,
+  BackArrowIcon,
+  OrbitalSpinnerIcon,
+} from "@/components/Icons";
 import Link from "next/link";
 
 export default function AnalyticsPage() {
@@ -50,32 +56,38 @@ export default function AnalyticsPage() {
   return (
     <div className="space-y-6">
       {/* Header with back link */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-4">
+      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-brown-200/90 pb-5">
         <div>
           <Link
             href="/"
-            className="inline-flex items-center space-x-1.5 text-xs text-indigo-400 hover:text-indigo-300 font-medium mb-1 transition-colors"
+            className="btn-kinetic group inline-flex items-center space-x-1.5 px-3 py-1 rounded-lg bg-cream-200/80 hover:bg-sage-100 text-brown-700 hover:text-sage-700 border border-brown-200 text-xs font-semibold mb-2.5"
           >
-            <ArrowLeft className="h-3.5 w-3.5" />
+            <BackArrowIcon className="h-3.5 w-3.5 transition-transform duration-200 group-hover:-translate-x-0.5" />
             <span>Back to Detection Workbench</span>
           </Link>
-          <h1 className="text-2xl font-extrabold text-white flex items-center space-x-2">
-            <BarChart3 className="h-6 w-6 text-indigo-400" />
-            <span>Analytics & Detection History</span>
+          <h1 className="text-2xl font-extrabold text-brown-800 flex items-center space-x-2.5">
+            <span className="h-9 w-9 rounded-xl bg-sage-100 border border-sage-200 flex items-center justify-center text-sage-600 shadow-warm-sm">
+              <AnalyticsChartIcon className="h-5 w-5" />
+            </span>
+            <span>Analytics &amp; Detection History</span>
           </h1>
-          <p className="text-xs text-slate-400 mt-0.5">
+          <p className="text-xs text-brown-600 mt-1">
             Real-time SQLite audit trail of all previous scans, latency benchmarks, and object distributions.
           </p>
         </div>
 
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2.5">
           <button
             type="button"
             onClick={loadData}
             disabled={isLoading}
-            className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-xs font-medium flex items-center space-x-1.5 transition-colors"
+            className="btn-kinetic group px-3.5 py-2 rounded-xl bg-cream-50 hover:bg-sage-50 text-brown-800 border border-brown-200 hover:border-sage-400 shadow-warm-sm text-xs font-semibold flex items-center space-x-1.5 disabled:opacity-60"
           >
-            <RefreshCw className={`h-3.5 w-3.5 ${isLoading ? "animate-spin" : ""}`} />
+            <RefreshSyncIcon
+              className={`h-3.5 w-3.5 text-sage-600 transition-transform duration-300 ${
+                isLoading ? "animate-spin" : "group-hover:rotate-180"
+              }`}
+            />
             <span>Refresh</span>
           </button>
 
@@ -84,23 +96,35 @@ export default function AnalyticsPage() {
               type="button"
               onClick={handleClearAll}
               disabled={isClearing}
-              className="px-3 py-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 text-xs font-medium flex items-center space-x-1.5 transition-colors"
+              className="btn-kinetic group px-3.5 py-2 rounded-xl bg-terracotta-50 hover:bg-terracotta-100 text-terracotta-600 border border-terracotta-200 shadow-warm-sm text-xs font-semibold flex items-center space-x-1.5 disabled:opacity-60"
             >
-              <Trash2 className="h-3.5 w-3.5" />
+              <TrashActionIcon className="h-3.5 w-3.5 transition-transform duration-200 group-hover:-rotate-6 group-hover:scale-110" />
               <span>Clear All History</span>
             </button>
           )}
         </div>
       </div>
 
-      {/* Aggregate Cards */}
-      {analytics && <AnalyticsCards analytics={analytics} />}
+      {/* Loading Indicator on Initial Fetch */}
+      {isLoading && !analytics ? (
+        <div className="p-14 rounded-2xl border border-brown-200 bg-cream-50/90 text-center flex flex-col items-center justify-center space-y-3 shadow-warm-sm">
+          <div className="h-12 w-12 rounded-2xl bg-sage-100 border border-sage-200 flex items-center justify-center text-sage-600">
+            <OrbitalSpinnerIcon className="h-6 w-6" />
+          </div>
+          <p className="text-xs font-semibold text-brown-700">Loading analytics &amp; scan history...</p>
+        </div>
+      ) : (
+        <>
+          {/* Aggregate Cards */}
+          {analytics && <AnalyticsCards analytics={analytics} />}
 
-      {/* History Table */}
-      <div className="space-y-3">
-        <h3 className="text-sm font-semibold text-slate-200">Recent Scans Record</h3>
-        <HistoryTable history={history} onRefresh={loadData} />
-      </div>
+          {/* History Table */}
+          <div className="space-y-3">
+            <h3 className="text-sm font-bold text-brown-800">Recent Scans Record</h3>
+            <HistoryTable history={history} onRefresh={loadData} />
+          </div>
+        </>
+      )}
     </div>
   );
 }

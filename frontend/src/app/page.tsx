@@ -8,7 +8,12 @@ import DetectionResults from "@/components/DetectionResults";
 import ExportButtons from "@/components/ExportButtons";
 import { fetchSupportedClasses, detectObjects, getFullImageUrl } from "@/lib/api";
 import { DetectionResponse, COCOClass } from "@/lib/types";
-import { Sparkles, AlertCircle, RefreshCw, Layers } from "lucide-react";
+import {
+  ModelChipIcon,
+  AlertNoticeIcon,
+  OrbitalSpinnerIcon,
+  AwaitingCanvasIcon,
+} from "@/components/Icons";
 
 export default function WorkbenchPage() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -62,23 +67,31 @@ export default function WorkbenchPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-7">
       {/* Hero Title Banner */}
-      <div className="relative rounded-3xl border border-slate-800 bg-gradient-to-r from-indigo-950/40 via-slate-900/60 to-slate-950 p-6 md:p-8 overflow-hidden shadow-2xl">
-        <div className="relative z-10 max-w-3xl space-y-2">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-semibold">
-            <Sparkles className="h-3.5 w-3.5" />
+      <section className="relative rounded-3xl border border-brown-200/90 bg-gradient-to-br from-cream-50 via-brown-50 to-sage-50 p-6 md:p-8 overflow-hidden shadow-warm-md">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-12 -top-12 h-48 w-48 rounded-full bg-sage-200/45 blur-2xl"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute right-24 -bottom-16 h-40 w-40 rounded-full bg-brown-200/40 blur-2xl"
+        />
+        <div className="relative z-10 max-w-3xl space-y-2.5">
+          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-sage-100 border border-sage-200 text-sage-700 text-xs font-semibold shadow-warm-sm">
+            <ModelChipIcon className="h-3.5 w-3.5 text-sage-600" />
             <span>Pretrained Ultralytics YOLOv8 Nano • COCO 80 Categories</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
-            AI Object Detection & Recognition
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-brown-800">
+            AI Object Detection &amp; Recognition
           </h1>
-          <p className="text-sm text-slate-400">
+          <p className="text-sm text-brown-600 leading-relaxed">
             High-performance deep learning vision pipeline. Upload any image to perform real-time bounding box
             localization, confidence scoring, category filtering, and automated report generation.
           </p>
         </div>
-      </div>
+      </section>
 
       {/* Main Grid: Left Controls & Right Workbench */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
@@ -108,33 +121,34 @@ export default function WorkbenchPage() {
         {/* Right Column (Comparator & Results) - 7 cols */}
         <div className="lg:col-span-7 space-y-6">
           {errorMsg && (
-            <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-sm flex items-start space-x-3">
-              <AlertCircle className="h-5 w-5 text-rose-400 shrink-0 mt-0.5" />
+            <div className="p-4 rounded-2xl bg-terracotta-50 border border-terracotta-200 text-terracotta-600 text-sm flex items-start space-x-3 shadow-warm-sm animate-fade-up">
+              <AlertNoticeIcon className="h-5 w-5 text-terracotta-500 shrink-0 mt-0.5" />
               <div>
-                <p className="font-semibold text-rose-200">Detection Error</p>
-                <p className="text-xs text-rose-300/90 mt-1">{errorMsg}</p>
+                <p className="font-semibold text-terracotta-600">Detection Error</p>
+                <p className="text-xs text-terracotta-600/90 mt-1">{errorMsg}</p>
               </div>
             </div>
           )}
 
           {isLoading && (
-            <div className="p-16 rounded-2xl border border-indigo-500/20 bg-slate-900/40 text-center flex flex-col items-center justify-center space-y-4">
-              <div className="relative">
-                <div className="h-16 w-16 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center text-indigo-400 animate-pulse">
-                  <RefreshCw className="h-8 w-8 animate-spin" />
-                </div>
+            <div className="p-14 rounded-2xl border border-sage-200 bg-cream-50/95 text-center flex flex-col items-center justify-center space-y-5 shadow-warm-md animate-fade-up">
+              <div className="h-16 w-16 rounded-2xl bg-sage-100 border border-sage-200 flex items-center justify-center text-sage-600 shadow-warm-sm">
+                <OrbitalSpinnerIcon className="h-8 w-8" />
               </div>
-              <div className="space-y-1">
-                <h4 className="text-base font-semibold text-slate-100">Analyzing Image with YOLOv8...</h4>
-                <p className="text-xs text-slate-400 max-w-sm">
+              <div className="space-y-1.5">
+                <h4 className="text-base font-bold text-brown-800">Analyzing Image with YOLOv8...</h4>
+                <p className="text-xs text-brown-600 max-w-sm">
                   Detecting objects, drawing styled bounding boxes, and computing confidence percentages.
                 </p>
+              </div>
+              <div className="w-56 h-1.5 rounded-full bg-cream-200 overflow-hidden border border-brown-200/70">
+                <div className="h-full w-1/2 rounded-full bg-gradient-to-r from-sage-400 via-sage-600 to-brown-400 animate-scan-sweep" />
               </div>
             </div>
           )}
 
           {!isLoading && detectionResult && previewUrl && (
-            <div className="space-y-6">
+            <div className="space-y-6 animate-fade-up">
               {/* Comparator */}
               <ImageComparator
                 originalUrl={previewUrl}
@@ -147,8 +161,10 @@ export default function WorkbenchPage() {
               />
 
               {/* Export Toolbar */}
-              <div className="p-4 rounded-xl border border-slate-800 bg-slate-900/50 flex flex-wrap items-center justify-between gap-3">
-                <span className="text-xs font-semibold text-slate-300">Export Results</span>
+              <div className="p-4 rounded-2xl border border-brown-200/85 bg-cream-50/90 shadow-warm-sm flex flex-wrap items-center justify-between gap-3">
+                <span className="text-xs font-semibold text-brown-700 uppercase tracking-wider">
+                  Export Results
+                </span>
                 <ExportButtons detection={detectionResult} />
               </div>
 
@@ -163,13 +179,14 @@ export default function WorkbenchPage() {
           )}
 
           {!isLoading && !detectionResult && (
-            <div className="p-16 rounded-2xl border border-dashed border-slate-800 bg-slate-900/20 text-center flex flex-col items-center justify-center space-y-3">
-              <div className="h-14 w-14 rounded-2xl bg-slate-800/60 border border-slate-700/60 flex items-center justify-center text-slate-500">
-                <Layers className="h-7 w-7" />
+            <div className="p-16 rounded-2xl border-2 border-dashed border-brown-300/80 bg-cream-50/70 text-center flex flex-col items-center justify-center space-y-3.5 shadow-warm-sm">
+              <div className="h-14 w-14 rounded-2xl bg-sage-100/80 border border-sage-200 flex items-center justify-center text-sage-600 animate-float-gentle">
+                <AwaitingCanvasIcon className="h-7 w-7" />
               </div>
-              <h4 className="text-sm font-semibold text-slate-300">Awaiting Image Input</h4>
-              <p className="text-xs text-slate-500 max-w-sm">
-                Select or drag-and-drop an image on the left, adjust your confidence parameters, and click &quot;Run Object Detection&quot;.
+              <h4 className="text-sm font-bold text-brown-800">Awaiting Image Input</h4>
+              <p className="text-xs text-brown-600 max-w-sm leading-relaxed">
+                Select or drag-and-drop an image on the left, adjust your confidence parameters, and click &quot;Run
+                Object Detection&quot;.
               </p>
             </div>
           )}
